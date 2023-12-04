@@ -16,7 +16,7 @@ Here we introduce the Uncountable Finite Complement Topology on elements of Type
 * We also show that this Topology is not T2.
 -/
 
-/--Here we first make UFCS Topology-/
+/--Here we first make UFCS Topology. The UFCS Topology is composed of elememnts of type `u` that are uncountable and open sets are defined as sets who are either empty or their complement is finite. -/
 def UFCS_mk {α : Type u}(hα : ¬ (Countable α ) ) : TopologicalSpace α where
   IsOpen X := Set.Finite Xᶜ ∨ X = ∅
   isOpen_univ := by
@@ -74,7 +74,7 @@ theorem UFCS_open_iff{X : Set α} : IsOpen X ↔ Set.Finite Xᶜ ∨ X = ∅ := 
   rw[topology_eq]
   exact Iff.rfl
 
-/--Here we show that UFCS is a T1 Topological Space-/
+/--Here we show that UFCS is a T1 Topological Space. To show that UFCS is a T1 Space, for any distict elements `x` and `y`, we consider an open set ` U = {y}ᶜ`, and prove the fact that `x ∈ {y}ᶜ` but `y ∉ {y}ᶜ`-/
 instance UFCS_T₁ : T1Space α := by
   rw [t1Space_iff_exists_open]
   intro x y hxy
@@ -92,7 +92,7 @@ instance UFCS_T₁ : T1Space α := by
     simp only [mem_compl_iff, mem_singleton_iff, not_true, not_false_eq_true]
   exact ⟨U, hUopen, hx, hy⟩
 
-/--UFCS is infinite-/
+/--Then we show tha fact that since elements in UFCS are not countable, they are infinite-/
 instance UFCS_Infinite : Infinite α := by
   by_contra hinf
   simp only [not_infinite_iff_finite] at hinf
@@ -100,12 +100,14 @@ instance UFCS_Infinite : Infinite α := by
     exact False.elim (hα Finite.to_countable)
   exact hα hαcount
 
-/--UFCS is nontrivial-/
+/--There exists greater than 2 elements of type `u`, i.e `u` is NonTrivial-/
 instance UFCS_nontrivial: Nontrivial α := by
   haveI := UFCS_Infinite α hα
   apply Infinite.instNontrivial α
 
-/--UFCS is not a T2 Space-/
+/--UFCS is not a T2 Space
+Proof Sketch : 
+-/
 theorem UFCS_not_T2 : ¬ T2Space α := by
     rw[t2Space_iff]
     push_neg
