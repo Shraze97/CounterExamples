@@ -22,11 +22,16 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-          cache: 'pip' # caching pip dependencies
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1      
+          python-version: '3'
+      - name : Python cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+      - run: pip install 'mydependency<2'
+        shell: bash
+      - run: ${{ github.action_path }}/myscript
+        shell: bash
       - name: Install elan
         run: curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain leanprover/lean4:4.0.0
 
@@ -52,7 +57,12 @@ jobs:
 
       - name: Build documentation
         run: ~/.elan/bin/lake -Kenv=dev build CounterExamples:docs
-
-
+      - name: Upload docs & blueprint artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs/_site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1      
 
 
