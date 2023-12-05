@@ -30,8 +30,6 @@ jobs:
           key: ${{ runner.os }}-pip
       - run: pip install 'mydependency<2'
         shell: bash
-      - run: ${{ github.action_path }}/myscript
-        shell: bash
       - name: Install elan
         run: curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain leanprover/lean4:4.0.0
 
