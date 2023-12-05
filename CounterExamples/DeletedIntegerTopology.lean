@@ -9,10 +9,11 @@ noncomputable section
 open Function Set Filter Topology TopologicalSpace
 /-!
 # Deleted Integer Space
-Deleted Integer Space is a Topological Space generated given on a structure `DeletedIntegerSpace(ℝ+)` where the elements are positive Real Numbers with deleted Integers i.e we remove all the integer points from the Topology.
+Deleted Integer Space is a Topological Space generated given on a structure `DeletedIntegerSpace(ℝ+)` where the elements are positive Real Numbers with deleted Integers i.e we remove all the integer points from the Space.
 Now, we construct a partition`DIT_Partition` on this topology which is set of `modified_Ioo : Set ℝ+`.
 `modified_Ioo` contains all the elements of `ℝ+` that lie between two consecutive integers.
 We then construct a Topology on `ℝ+` by considering that these elements are contained in those open sets .
+We also construct `DIT_indexed_partition` for future use. 
  -/
 
 
@@ -26,9 +27,19 @@ structure DeletedIntegerSpace where
 /--Notation for `ℝ+`-/
 notation "ℝ+" => DeletedIntegerSpace
 
-/--sets in ℝ+ which when imbedded inside the straight line act as open sets in ℝ-/
+/--sets in ℝ+  which contain all the points between `b` and `b + 1`.-/
+@[inline]
 def modified_Ioo(b : ℕ) : Set ℝ+ :=
   {a : ℝ+ | a.1 ∈ Set.Ioo (b : ℝ) (b + 1 : ℝ )  }
+
+/-! 
+# Partition : Setoid.Partition
+A Partioition is a set of sets such that
+ * all elements of the partition are disjoint and non-empty 
+ * every element of the Space is contained in a unique element of the partition.
+So, the union of all the sets in the partition is the whole space. 
+-/
+
 
 /--Partition of sets in ℝ+ on which we develop the partition topology-/
 def DIT_partition : Set (Set ℝ+) :=
@@ -58,7 +69,7 @@ lemma DIT_partition_equiv_indexed_partition : DIT_partition = Set.range DIT_inde
     rw[ha]
 
 
-/--Lemma showing the fact that if 0.5 is added to a natural number than it is not equal to another natural number. This will play significant role in producing an element of DIT-/
+/--Lemma showing the fact that if 0.5 is added to a natural number then it is not equal to another natural number. This is used in producing an element of ℝ+-/
 lemma pointfive_plus_x(x : ℕ) : ∀ y : ℕ , ((x: ℝ ) + 0.5 ) ≠ (y : ℝ) := by
   norm_num
   field_simp
@@ -73,7 +84,7 @@ lemma pointfive_plus_x(x : ℕ) : ∀ y : ℕ , ((x: ℝ ) + 0.5 ) ≠ (y : ℝ)
   rw[this]
   simp only [Int.mul_emod_left]
 
-/--Lemma showing the fact that if 0.5 is added to a natural number than it is not equal to another natural number. This will play significant role in producing an element of DIT-/
+/--Lemma showing the fact that if 0.25 is added to a natural number then it is not equal to another natural number. This is used in producing an element of ℝ+-/
 lemma twentyfive_plus_x(x : ℕ) : ∀ y : ℕ , ((x : ℝ ) + 0.25) ≠ (y : ℝ) := by
   norm_num
   field_simp
@@ -87,7 +98,7 @@ lemma twentyfive_plus_x(x : ℕ) : ∀ y : ℕ , ((x : ℝ ) + 0.25) ≠ (y : �
   rw[this]
   simp only [Int.mul_emod_left]
 
-/--Lemma used in producing an element of DIT-/
+/--Lemma used in producing an element of ℝ+-/
 lemma x_plus_one_gt_zero(x : ℕ) : (x : ℝ) + 0.5 >  0 := by
   norm_num
   field_simp
@@ -111,7 +122,8 @@ lemma floor_cast_aux(r: ℝ+): @Nat.cast ℝ Real.natCast  (Int.toNat (Int.floor
   norm_cast
   rw[floor_cast_aux_2 r]
 
-/--Theorem Proving the fact that DIT partition is a partition-/
+
+/--Theorem Proving the fact that DIT_partition is a partition-/
 theorem DIT_partition_is_partition : Setoid.IsPartition DIT_partition  := by
   rw[Setoid.IsPartition]
   constructor
@@ -175,7 +187,7 @@ theorem DIT_partition_is_partition : Setoid.IsPartition DIT_partition  := by
     rw[hra]
     assumption
 
-/--Making a Deleted Integer Topology as a Topological Space in ℝ+ -/
+/--Making a Deleted Integer Topology as a Topological Space in ℝ+, generated from DIT_Partition i.e all the open sets are generated from union of sets in DIT and finite intersection of sets in DIT -/
 def DeletedIntegerTopology_mk : TopologicalSpace ℝ+ :=
   TopologicalSpace.generateFrom (DIT_partition)
 
@@ -209,7 +221,7 @@ lemma permutation_elements(α : Type u)(w : Set α)(y : Set α)(z : Set α): {w,
   rw[Set.union_assoc]
   rw[Set.union_comm {w} {y}]
 
-/--In a partition, distinct elements are disjoint-/
+/--Distinct elements of the partition are disjoint-/
 lemma IsPartition_intersection (α : Type u)(x : Set α)(y : Set α )(c : Set (Set α))(hc : Setoid.IsPartition c )(hx : x ∈ c)(hy : y ∈ c)(hxy : x ≠ y) : x ∩ y = ∅  := by
   rw[← Set.disjoint_iff_inter_eq_empty]
   have hpdxy : Set.PairwiseDisjoint c id := Setoid.IsPartition.pairwiseDisjoint hc
@@ -219,8 +231,20 @@ lemma IsPartition_intersection (α : Type u)(x : Set α)(y : Set α )(c : Set (S
   simp only [id_eq] at hpdxy
   assumption
 
+/--The  Basis of the Toopological Space, we will prove later that this indeed becomes the basis of DIT when c is DIT_Partition-/
+def TopBasis(c : Set (Set α))(hc : Setoid.IsPartition c ) : Set (Set α) := c ∪ {univ} ∪ {∅} 
 
-/--Lemma stating the fact that in a partition (with 2 elements) the finite intersection of elements is contained in the partition itselfunion the whole space and the empty set -/
+section DeletedIntegerTopology
+
+variable [t : TopologicalSpace ℝ+](topology_eq : t = DeletedIntegerTopology_mk)
+/-!
+# Plan to Formalize that DIT is not T0
+* First we Formalize the fact that the basis of DIT is the TopBasis specialised for the DIT_Partition i.e the basis of DIT is the union of DIT_partition, the empty set and the universal set.
+* Then for any 2 points `x,y` in the same `P := modified_Ioo`, every open set containing `x` will contain `y` because the basic set `P` will be contained in every open set `U` which contains `x`. This is because `P` and `univ` are the only basic open sets which contain `x`.
+Then we are done
+-/
+
+/--Lemma stating the fact that in a partition (with 2 elements), the finite intersection of elements is member of TopBasis -/
 lemma Card_case_2 (α : Type u)[DECα : DecidableEq (Set α)](c : Set (Set α))(hc : Setoid.IsPartition c )(S : Set α)(x : Set (Set α) )(hxfin : @Set.Finite (Set α) x)(hrr : @Finset.card (Set α) (Finite.toFinset hxfin) = 2)(hxc : x ⊆  c)(hx : ⋂₀ x = S) : S ∈ c ∪ {univ} ∪ {∅}:= by
   rw[Finset.card_eq_two] at hrr
   match hrr with
@@ -244,7 +268,7 @@ lemma Card_case_2 (α : Type u)[DECα : DecidableEq (Set α)](c : Set (Set α))(
   apply IsPartition_intersection α w y c hc hxc.1 hxc.2 hyw
 
 
-/--Lemma stating the fact that in a partition(general case) the finite intersection of elements is contained in the partition itselfunion the whole space and the empty set-/
+/--Lemma stating the fact that in a partition(general case) the finite intersection of elements is contained in the TopBasis of the Partition-/
 lemma finite_intersection_of_partition(α : Type u) (c : Set (Set α))(hc : Setoid.IsPartition c )(hcnon : c.Nontrivial) : c ∪{univ}∪ {∅}  = ((fun (f: Set (Set α)) => ⋂₀ f) '' {f | Set.Finite f ∧ f ⊆ (c ) }) := by
   ext S
   constructor
@@ -352,11 +376,7 @@ lemma finite_intersection_of_partition(α : Type u) (c : Set (Set α))(hc : Seto
   simp only [hsinter_sub, true_or]
 
 
-section DeletedIntegerTopology
-
-variable [t : TopologicalSpace ℝ+](topology_eq : t = DeletedIntegerTopology_mk)
-
-/--Theorem stating the fact that DIT is non_trivial-/
+/--Theorem stating the fact that DIT is non_trivial,i,e it contains more than 2 elements, this is required for the fact that DIT_basis contains the ∅ set because if not, the basis of the topology will not contain the empty set, a contradiction-/
 theorem DIT_nontrivial : DIT_partition.Nontrivial := by
   rw[Set.Nontrivial]
   set a1 : Set ℝ+ := modified_Ioo 1 with ha1
@@ -384,8 +404,14 @@ theorem DIT_nontrivial : DIT_partition.Nontrivial := by
     add_le_iff_nonpos_right, mem_Ioo, add_lt_add_iff_left] at h
   norm_num at h
 
-/--The Topological Basis of DIT is the DIT_partition in union with universal set and the empty set-/
-theorem DIT.TopologicalBasis : TopologicalSpace.IsTopologicalBasis (DIT_partition ∪{univ}∪ {∅}) := by
+/--The base of the Deleted Integer Topology-/
+@[inline]
+def DIT_basis := TopBasis DIT_partition DIT_partition_is_partition 
+
+/--Theorem to prove that Topological Basis of DIT is DIT_Basis -/
+theorem DIT.TopologicalBasis : TopologicalSpace.IsTopologicalBasis DIT_basis:= by
+  rw[DIT_basis]
+  rw[TopBasis]
   rw[DeletedIntegerTopology_mk] at topology_eq
   rw[finite_intersection_of_partition ℝ+ (DIT_partition) (DIT_partition_is_partition) (DIT_nontrivial) ]
   apply TopologicalSpace.isTopologicalBasis_of_subbasis topology_eq
@@ -394,6 +420,7 @@ theorem DIT.TopologicalBasis : TopologicalSpace.IsTopologicalBasis (DIT_partitio
 lemma DIT_not_T0_aux(x1 : ℝ+)(x2 : ℝ+)(S : Set ℝ+)(a : Set ℝ+)(ha : a = modified_Ioo 2)(hx1a : x1 ∈ a)(hx2a : x2 ∈ a)(hS : IsOpen S) : x1 ∈ S →  x2 ∈ S := by
   intro hSx1
   rw[TopologicalSpace.IsTopologicalBasis.isOpen_iff (DIT.TopologicalBasis topology_eq)] at hS
+  rw[DIT_basis,TopBasis] at hS
   specialize hS x1 hSx1
   match hS with
   |⟨t1, htdit,htx1, hts⟩ =>
