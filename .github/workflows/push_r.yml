@@ -44,12 +44,6 @@ jobs:
       - name: Build documentation
         run: ~/.elan/bin/lake -Kenv=dev build CounterExamples:docs
 
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-          cache: 'pip' # caching pip dependencies
-      
       - name: Upload docs & blueprint artifact
         uses: actions/upload-pages-artifact@v1
         with:
