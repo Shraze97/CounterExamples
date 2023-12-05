@@ -12,14 +12,15 @@ universe u v w
 
 /-!
 # Fortissimo Space
-In a universe of elements of type u, which is not countable, we define a topology on u, called the Fortissimo Space. Let $p$ be a particular element of u. A set $X$ is open in the Fortissimo Space if either $p$ is contained in the complement of $X$ or the complement of $X$ is countable.
+In a universe of elements of type u, which is not countable, we define a topology on u, called the Fortissimo Space. Let `p` be a particular element of `u`. A set $X$ is open in the Fortissimo Space if either `p` is contained in the complement of `X` or the complement of `X` is countable.
 
 * We show that the Fortissimo Space is a T1 Space.
+`TODO`: Prove that Fortissimo Space is T5
 
 -/
 
 
-/--Making the Fortissimo Space-/
+/--Making the Fortissimo Space. A Set `X`is an open set in uncountable space if `p ∈ Xᶜ ` or `Xᶜ` is countable. In order to enforec full generality, we don't introduce the fact that Fortissimo Space is not countable.-/
 def FortissiomoSpace_mk{α : Type u}(p : α) : TopologicalSpace α where
   IsOpen X := p ∈ Xᶜ  ∨ Set.Countable Xᶜ
   isOpen_univ := by
@@ -78,6 +79,10 @@ theorem FS_open_iff : IsOpen X = (p ∈ Xᶜ  ∨ Set.Countable Xᶜ) := by
   rw[topology_eq]
   rfl
 
+/-! Here we prove the fact that Fortissimo Space is a T1 Space. 
+Proof Sketch : `p` is a particular point the Fortissimo Space , then for any 2 arbitrary distinct points, we consider 2 cases, either one of them is a `p` or both of them are not `p`. If y is `p` then consider `U = {p}ᶜ`, and ,hence `U` is an open set(`{p}` is countable) with `x ∈ U` & `y ∉ U` If x is `p`, then take U to be `{y}ᶜ` , then  `U` is an open set(`{y}` is countable) with `x ∈ U` & `y ∉ U`.
+If both x and y are not p, then take `U = {p,y}ᶜ` then  `U` is an open set(p contains `{p,y}` ) with `x ∈ U` & `y ∉ U` 
+ -/
 /--Fortissimo Space is a T1 Space-/
 instance FS_T₁ : T1Space α := by
   rw[t1Space_iff_exists_open]
@@ -126,6 +131,11 @@ instance FS_T₁ : T1Space α := by
   rw[hU]
   simp only [mem_singleton_iff, mem_compl_iff, mem_insert_iff, true_or, not_true_eq_false,
     not_false_eq_true]
+
+/-!It is also a T5 Space, as it is a T1 Space and for any two seperated sets `A` and `B` if neither contains `p`, then they are both open and we are already done. If one of them contains P, say `A`, then `p ∉ B` and hence B is open . 
+B is also closed , because if not then `Bᶜ` is not open , so this means that B contains uncountable elements, `closure B` also contains uncountable elements. But `(closure B)ᶜ` is open and `(closure B)ᶜᶜ = closure B` is uncountable, thus `(closure B)ᶜᶜ = closure B` must contain `p`. But `p ∈ A`, thus `closure B ∩ A ≠ ∅ `, which is a contradiction as A and B are seperated sets.
+So, `B` and `Bᶜ` are required open sets such that `A ⊆ Bᶜ ` and `B ⊆ B`. 
+-/
 
 /--Fortissimo Space is a T5 Space-/
 instance FS_T₅ : T5Space α := by
