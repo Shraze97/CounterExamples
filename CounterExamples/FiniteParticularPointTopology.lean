@@ -66,6 +66,11 @@ theorem FPT_open_iff {X : Set α} : IsOpen X ↔ p ∈ X ∨ X = ∅ := by
   rw [topology_eq]
   exact Iff.rfl
 
+/-! Here we prove that Finite Particular Point Topology is a T0 Space.
+Proof Sketch : For any `x,y ∈ τ`, We take 2 cases either `(x = p) ∨ (y = p)` or both of them are not `p`. In the first case, consider wlog `x = p` then the set `S : {p}` is open as `p ∈ S`. Also, `x ∈ S` but `y ∉ S`. And hence we are done.
+In the case take the set `S : {p,x}`, the S is open s `p ∈ S`. Also, `x ∈ S` but `y ∉ S`. And hence we are done.
+
+-/
 /--FPT is T0-/
 instance FPT_T₀ : T0Space α := by
     rw[t0Space_iff_inseparable]
@@ -115,10 +120,12 @@ instance FPT_T₀ : T0Space α := by
 /-! Here we first introduce the fact that the no. of elements in the space is greater than 2 (otherwise it's a Sierpinski Space) -/
 variable (hn : Fintype.card α > 2 )
 
-/--FPT contains more that 2 elements-/
+/--FPT is non-trivial , as it contains more than 2 elements-/
 instance Nontrivial_α : Nontrivial α := by
   apply Fintype.one_lt_card_iff_nontrivial.mp
   linarith
+/-! Here we prove that Finite Particular Point Topology is not a  T1 Space.
+Proof Sketch : In order to prove that it is not T1, one needs to show that there exists distinct elements `a,b ∈ τ`, such that for all open sets  `U ∈ τ`,if `a ∈ U`, then `b ∈ U`, So, we consider `a ≠  p` and `b = p`  be our 2 elements. The any open set `U : Open` , , if `a ∈ U`, then by definition `b ∈ U`.  -/
 
 /--FPT is not T₁-/
 theorem FPT_not_T₁ : ¬ T1Space α := by
