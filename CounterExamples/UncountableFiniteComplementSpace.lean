@@ -105,9 +105,11 @@ instance UFCS_nontrivial: Nontrivial α := by
   haveI := UFCS_Infinite α hα
   apply Infinite.instNontrivial α
 
-/--UFCS is not a T2 Space
-Proof Sketch : 
--/
+/-! Now UFCS is not a T2 Space. A T2 space is a space where any 2  distict points `x` ,`y`; there exists disjoint open sets `U` and `V`. 
+In order to Prove that UFCS is not a T2 Space,  we choose any 2 points `x ` and `y` in the UFCS space and then prove the fact that  for any open set `U` st.  `x ∈  U` and open set `V` st. `y ∈ U` then `U ∩ V ` is never empty. 
+Proof Sketch : Since `U` and `V` are non-empty consider the intersection , there complement is a finite set. Thus `(U ∩ V)ᶜ`, is also a finite set, but since the space is not countable, the complement of empty set is not finite, thus `U ∩ V ≠ ∅`.
+ -/
+/-UFCS is not a T2 Space-/
 theorem UFCS_not_T2 : ¬ T2Space α := by
     rw[t2Space_iff]
     push_neg
