@@ -39,7 +39,7 @@ notation "ℚ+" => UpperHalfRationals
 /--Open Ball of ℚ+ given `ε : ℝ(radii)` and `ζ : ℝ (centre)`  -/
 @[inline]
 def B (ε : ℝ)(ζ : ℝ) : Set ℚ+ := {z : ℚ+ | ‖z.x - ζ‖ < ε ∧ z.y = 0}
-/!- Remark : This open ball is not an open set in the Topology generated -/
+/-! Remark : This open ball is not an open set in the Topology generated -/
 
 /--Constructing the fundamental system of neighbourhoods of a point-.
 # The fundamental system of neighbourhoods(ζ) :
