@@ -49,7 +49,7 @@ For any point `x : ℚ+`, such that for each neighbourhood `V` of `x`, there is 
 def nhs_dit (θ : ℝ)(ε : ℝ)(z : ℚ+) : Set ℚ+ := {z} ∪ B ε (z.x - z.y / θ) ∪ B ε (z.x + z.y / θ)
 
 /-! 
-The main idea about neighbourhoods of a point in IST is the fact that neighbourhoods are constructed of 2 open balls whose centre is an irrational points (z.x ± z.y/θ ), the line joining these points to (x,y) have slope ±θ. 
+The main idea about neighbourhoods of a point in IST is the fact that neighbourhoods are constructed of 2 open balls whose centres are irrational points (z.x ± z.y/θ ), the line joining these points to (x,y) have slope ±θ. 
 -/
 /--Smaller Ball is contained in a Bigger Ball-/
 lemma B_le (ε₁ : ℝ)(ε₂ : ℝ )(z : ℝ)(hε : ε₁ ≥  ε₂) : B ε₂ z ⊆ B ε₁ z :=
