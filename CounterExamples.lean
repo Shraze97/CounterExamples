@@ -43,4 +43,4 @@ So, in order to distinguish these Counter Examples , the plan of the project is 
 # Navigation
 To browse the code, click on the navigation tab
 -/
-def Hello : String := "Hello"
+
