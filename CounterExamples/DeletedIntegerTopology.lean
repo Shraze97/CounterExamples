@@ -34,7 +34,7 @@ def modified_Ioo(b : ℕ) : Set ℝ+ :=
 
 /-! 
 # Partition : Setoid.Partition
-A Partioition is a set of sets such that
+A Partiition is a set of sets such that
  * all elements of the partition are disjoint and non-empty 
  * every element of the Space is contained in a unique element of the partition.
 So, the union of all the sets in the partition is the whole space. 
