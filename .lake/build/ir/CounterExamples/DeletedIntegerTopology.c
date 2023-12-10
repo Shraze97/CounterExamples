@@ -39,6 +39,7 @@ static lean_object* l_term_u211d_x2b___closed__3;
 lean_object* l_Lean_Name_str___override(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node2(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_getArg(lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_DIT__basis;
 lean_object* l_Array_append___rarg(lean_object*, lean_object*);
 static lean_object* l___aux__CounterExamples__DeletedIntegerTopology______unexpand__DeletedIntegerSpace__1___closed__8;
 static lean_object* l_term_u211d_x2b___closed__2;
@@ -439,6 +440,12 @@ x_1 = lean_box(0);
 return x_1;
 }
 }
+static lean_object* _init_l_DIT__basis() {
+_start:
+{
+return lean_box(0);
+}
+}
 lean_object* initialize_Init(uint8_t builtin, lean_object*);
 lean_object* initialize_Mathlib_Topology_Constructions(uint8_t builtin, lean_object*);
 lean_object* initialize_Mathlib_Topology_Order(uint8_t builtin, lean_object*);
@@ -509,6 +516,7 @@ lean_mark_persistent(l___aux__CounterExamples__DeletedIntegerTopology______unexp
 l_DIT__partition = _init_l_DIT__partition();
 l_DeletedIntegerTopology__mk = _init_l_DeletedIntegerTopology__mk();
 lean_mark_persistent(l_DeletedIntegerTopology__mk);
+l_DIT__basis = _init_l_DIT__basis();
 return lean_io_result_mk_ok(lean_box(0));
 }
 #ifdef __cplusplus
