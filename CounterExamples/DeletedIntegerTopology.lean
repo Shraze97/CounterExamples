@@ -24,7 +24,7 @@ structure DeletedIntegerSpace where
   hn : x > 0
   hx : ∀ y : ℕ , x ≠ y
 
-/--Notation for `ℝ+`-/
+/--Notation for Deleted Integer Space :- `ℝ+`-/
 notation "ℝ+" => DeletedIntegerSpace
 
 /--sets in ℝ+  which contain all the points between `b` and `b + 1`.-/
