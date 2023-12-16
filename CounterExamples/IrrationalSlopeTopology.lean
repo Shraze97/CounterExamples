@@ -432,6 +432,41 @@ lemma smaller_balls_disjoint_if_disjoint(ε₁ : ℝ)(ε₂ : ℝ)(ε₃ : ℝ)(
   rw[← Set.disjoint_iff_inter_eq_empty,Set.disjoint_left] at hdisjoint
   apply hdisjoint hx1 hx2
 
+
+/--Constructing a ball around a centre that excludes a point when the point is not the centre-/
+lemma B_ball_exclude_point_construct(z1 : ℝ)(z2 : ℚ+)(hz1hz2 : z1 ≠ z2.x - z2.y/θ):∃ ε₁ : ℝ, B ε₁ z1 ∩ {z2} = ∅ ∧ ε₁ > 0 := by 
+  set ε₁ : ℝ := |z2.x - z2.y/θ - z1|/2  with hε₁
+  use ε₁ 
+  constructor
+  rw[B]
+  simp only [Real.norm_eq_abs, inter_singleton_eq_empty, mem_setOf_eq]
+  rw[not_and_or]
+  by_cases hlem : z2.y = 0
+  rw[hlem] at hz1hz2
+  rw[hlem]
+  simp only [Rat.cast_zero, zero_div, sub_zero, not_lt, half_le_self_iff, abs_nonneg,
+    not_true_eq_false, or_false]
+  right 
+  assumption
+  rw[hε₁]
+  simp only [gt_iff_lt]
+  apply half_pos
+  simp only [abs_pos, ne_eq]
+  apply sub_ne_zero_of_ne
+  exact Ne.symm hz1hz2
+  
+/--Smaller Ball excludes a point if the larger ball excludes it-/
+lemma smaller_ball_exclude_if_exclude(z1 : ℝ)(z2 : ℚ+)(ε₁ : ℝ)(ε₃ : ℝ)(h13 :ε₃ ≤ ε₁)(hB: B ε₁ z1 ∩ {z2} = ∅) : B ε₃ z1 ∩ {z2} = ∅ := by 
+  rw[B] at *
+  simp only [ne_eq, Real.norm_eq_abs, inter_singleton_eq_empty, mem_setOf_eq] at *
+  rw[not_and_or] at *
+  cases hB
+  left 
+  linarith
+  right
+  assumption
+
+
 /--We can find distinct neighbourhoods between 2 points.-/
 lemma disjoint_nhs_gen (z1 : ℚ+)(z2 : ℚ+)(hz1hz2 : z1 ≠ z2):  ∃ ε₁ ε₂ : ℝ , (nhs_dit θ ε₁ z1 ∩ nhs_dit θ ε₂ z2 = ∅) ∧ (ε₁ > 0) ∧ (ε₂ > 0) := by
   match B_disjoint_ball_construct (z1.x - z1.y/θ) (z2.x - z2.y/θ) (distinct_points_z1_z2 θ hθ z1 z2 hz1hz2) with
@@ -444,7 +479,7 @@ lemma disjoint_nhs_gen (z1 : ℚ+)(z2 : ℚ+)(hz1hz2 : z1 ≠ z2):  ∃ ε₁ ε
   rw[div_neg,div_neg,sub_neg_eq_add,← sub_eq_add_neg] at hef
   match B_disjoint_ball_construct (z1.x - z1.y/(-θ)) (z2.x - z2.y/(-θ)) (distinct_points_z1_z2 (-θ) hθneg z1 z2 hz1hz2) with
   |⟨g,h,hgh,hg,hh⟩ =>
-
+  
   sorry
 
 

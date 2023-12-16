@@ -1,0 +1,17 @@
+import Lean
+import Mathlib.Tactic
+macro x:ident ":" t:term " ↦ " y:term : term => do
+`(fun $x : $t => $y)
+#eval (x : Nat ↦ x + 2) 2 --4
+
+elab "#assertType " termStx:term " : " typeStx:term : command =>
+  open Lean Lean.Elab Command Term in
+  liftTermElabM
+    try
+      let tp ← elabType typeStx
+      discard $ elabTermEnsuringType termStx tp
+      synthesizeSyntheticMVarsNoPostponing
+      logInfo "success"
+    catch | _ => throwError "failiure"
+
+#assertType 5: Nat -- success
