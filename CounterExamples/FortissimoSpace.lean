@@ -138,8 +138,63 @@ So, `B` and `Bᶜ` are required open sets such that `A ⊆ Bᶜ ` and `B ⊆ B`.
 -/
 
 /--Fortissimo Space is a T5 Space-/
-instance FS_T₅ : T5Space α := by
-
-  sorry
+instance FS_T₅ : T5Space α where
+  t1 := (FS_T₁ p topology_eq).t1
+  completely_normal := by
+    intros a b hab hba 
+    rw[Filter.disjoint_iff]
+    by_cases hp : p ∈ a ∨ p ∈ b 
+    wlog hpa : p ∈ a 
+    ·   specialize this p hcount topology_eq (Disjoint.symm hba) (Disjoint.symm hab) hp.symm (Or.resolve_left hp hpa)
+        match this with 
+        |⟨c ,hc,d,hd,hcd⟩ => 
+        exact ⟨d, hd,c ,hc , Disjoint.symm hcd⟩ 
+    rw[topology_eq]
+    have hdisab : Disjoint a b := by 
+      apply Disjoint.mono_left
+      swap 
+      exact hab
+      simp only [le_eq_subset,subset_closure] 
+    have hpb : p ∉ b := by 
+      rw[Set.disjoint_iff_inter_eq_empty] at hdisab
+      by_contra h
+      have hpab : p ∈ a ∩ b := Set.mem_inter hpa h
+      rw[hdisab] at hpab
+      simp only [mem_empty_iff_false] at hpab 
+    have hpOpen : IsOpen b := by 
+      rw[FS_open_iff p topology_eq] 
+      left
+      simp only [mem_compl_iff]
+      assumption
+    have hpClosed : IsClosed b := by 
+      sorry
+    
+    sorry
+    push_neg at hp
+    have ha : IsOpen a := by 
+      rw[FS_open_iff p ]
+      left 
+      simp only [mem_compl_iff]
+      exact hp.1
+      exact topology_eq
+    have hb : IsOpen b := by 
+      rw[FS_open_iff p ]
+      left 
+      simp only [mem_compl_iff]
+      exact hp.2
+      exact topology_eq   
+    use a
+    constructor
+    rw[← subset_interior_iff_mem_nhdsSet,subset_interior_iff_isOpen]
+    exact ha
+    use b
+    constructor
+    rw[← subset_interior_iff_mem_nhdsSet,subset_interior_iff_isOpen]
+    exact hb
+    apply Disjoint.mono_left
+    swap
+    exact hab
+    simp only [le_eq_subset,subset_closure]    
+    
 
 end FortissiomoSpace

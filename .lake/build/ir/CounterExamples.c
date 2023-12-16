@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: CounterExamples
-// Imports: Init
+// Imports: Init CounterExamples.DeletedIntegerTopology CounterExamples.FiniteParticularPointTopology CounterExamples.FortissimoSpace CounterExamples.HalfDiscTopology CounterExamples.IrrationalSlopeTopology CounterExamples.UncountableFiniteComplementSpace
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -13,25 +13,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-LEAN_EXPORT lean_object* l_hello;
-static lean_object* l_hello___closed__1;
-static lean_object* _init_l_hello___closed__1() {
-_start:
-{
-lean_object* x_1; 
-x_1 = lean_mk_string_from_bytes("world", 5);
-return x_1;
-}
-}
-static lean_object* _init_l_hello() {
-_start:
-{
-lean_object* x_1; 
-x_1 = l_hello___closed__1;
-return x_1;
-}
-}
 lean_object* initialize_Init(uint8_t builtin, lean_object*);
+lean_object* initialize_CounterExamples_DeletedIntegerTopology(uint8_t builtin, lean_object*);
+lean_object* initialize_CounterExamples_FiniteParticularPointTopology(uint8_t builtin, lean_object*);
+lean_object* initialize_CounterExamples_FortissimoSpace(uint8_t builtin, lean_object*);
+lean_object* initialize_CounterExamples_HalfDiscTopology(uint8_t builtin, lean_object*);
+lean_object* initialize_CounterExamples_IrrationalSlopeTopology(uint8_t builtin, lean_object*);
+lean_object* initialize_CounterExamples_UncountableFiniteComplementSpace(uint8_t builtin, lean_object*);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_CounterExamples(uint8_t builtin, lean_object* w) {
 lean_object * res;
@@ -40,10 +28,24 @@ _G_initialized = true;
 res = initialize_Init(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-l_hello___closed__1 = _init_l_hello___closed__1();
-lean_mark_persistent(l_hello___closed__1);
-l_hello = _init_l_hello();
-lean_mark_persistent(l_hello);
+res = initialize_CounterExamples_DeletedIntegerTopology(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_CounterExamples_FiniteParticularPointTopology(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_CounterExamples_FortissimoSpace(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_CounterExamples_HalfDiscTopology(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_CounterExamples_IrrationalSlopeTopology(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_CounterExamples_UncountableFiniteComplementSpace(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
 return lean_io_result_mk_ok(lean_box(0));
 }
 #ifdef __cplusplus
