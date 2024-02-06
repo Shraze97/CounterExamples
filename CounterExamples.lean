@@ -32,7 +32,7 @@ Here, I have specifically focussed on implementing the counter examples in topol
 * `T5 axiom` : If `A` and `B` are seperated sets i.e `closure A ∩ B = ∅ ` and `A ∩ closure B = ∅ `, then there exists open sets `U` and `V ` st. `A ⊆ U`,`B ⊆ V` and `U ∩ V = ∅`. In Bourbaki and lean's definition it also inherits the `T1` Space. 
 
 
-So, in order to distinguish these Counter Examples , the plan of the project is to formalize these Topological Spaces :-
+So, in order to distinguish these Seperation Axioms , the plan of the project is to formalize these Topological Spaces :-
 * `Deleted Integer Topology` : A Topological Space which is not `T0`
 * `Finite Particular Point Topology` :  A Topological Space which is not `T1` but is `T0`.
 * `Uncountable Finite Complement Topology` : A Topological Space which is not `T2` but is `T1`.
