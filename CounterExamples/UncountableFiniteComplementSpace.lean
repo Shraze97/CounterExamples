@@ -112,6 +112,7 @@ Proof Sketch : Since `U` and `V` are non-empty consider the intersection , there
 /-UFCS is not a T2 Space-/
 theorem UFCS_not_T2 : ¬ T2Space α := by
     rw[t2Space_iff]
+    rw[Pairwise]
     push_neg
     haveI := UFCS_nontrivial α hα
     have hxye : ∃ x y : α, x ≠ y := by
