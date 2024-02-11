@@ -130,6 +130,7 @@ Proof Sketch : In order to prove that it is not T1, one needs to show that there
 /--FPT is not T₁-/
 theorem FPT_not_T₁ : ¬ T1Space α := by
   rw[t1Space_iff_exists_open]
+  rw[Pairwise]
   push_neg
   have heq : ∃ (a : α) (b: α) (c: α ), a ≠ b ∧ a ≠ c ∧ b ≠ c := Fintype.two_lt_card_iff.mp hn
   match heq with
