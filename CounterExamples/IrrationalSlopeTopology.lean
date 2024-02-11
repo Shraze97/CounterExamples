@@ -466,6 +466,16 @@ lemma smaller_ball_exclude_if_exclude(z1 : ℝ)(z2 : ℚ+)(ε₁ : ℝ)(ε₃ : 
   right
   assumption
 
+lemma B_ball_exclude_point_construct_modify(z1 : ℚ+)(z2 : ℚ+)(hlemma : z1 ≠ z2): ∃ ε₁ : ℝ, B ε₁ (z1.x - z1.y/θ)  ∩ {z2} = ∅ ∧ ε₁ > 0 := by
+  apply B_ball_exclude_point_construct
+  apply distinct_points_z1_z2 
+  use hθ 
+  apply hlemma
+
+lemma disjoint_points(z1 : ℚ+)(z2 : ℚ+)(hlemma : z1 ≠ z2) : ({z2}: Set ℚ+) ∩ {z1} = ∅   := by 
+  simp only [inter_singleton_eq_empty, mem_singleton_iff, hlemma, not_false_eq_true]
+
+
 
 /--We can find distinct neighbourhoods between 2 points.-/
 lemma disjoint_nhs_gen (z1 : ℚ+)(z2 : ℚ+)(hz1hz2 : z1 ≠ z2):  ∃ ε₁ ε₂ : ℝ , (nhs_dit θ ε₁ z1 ∩ nhs_dit θ ε₂ z2 = ∅) ∧ (ε₁ > 0) ∧ (ε₂ > 0) := by
@@ -476,10 +486,28 @@ lemma disjoint_nhs_gen (z1 : ℚ+)(z2 : ℚ+)(hz1hz2 : z1 ≠ z2):  ∃ ε₁ ε
   have hθneg : Irrational (-θ) := Irrational.neg hθ
   match B_disjoint_ball_construct (z1.x - z1.y/(-θ)) (z2.x + z2.y/(-θ)) (distinct_points_z1_z2_diff (-θ) hθneg z1 z2 hz1hz2) with
   |⟨e,f,hef,he,hf⟩ =>
-  rw[div_neg,div_neg,sub_neg_eq_add,← sub_eq_add_neg] at hef
   match B_disjoint_ball_construct (z1.x - z1.y/(-θ)) (z2.x - z2.y/(-θ)) (distinct_points_z1_z2 (-θ) hθneg z1 z2 hz1hz2) with
   |⟨g,h,hgh,hg,hh⟩ =>
-  
+  match B_ball_exclude_point_construct_modify θ hθ z1 z2 hz1hz2 with 
+  |⟨i,hib,hi⟩ =>
+  match B_ball_exclude_point_construct_modify (-θ) hθneg z1 z2 hz1hz2 with 
+  |⟨j,hjb,hj⟩ => 
+  match B_ball_exclude_point_construct_modify θ hθ z2 z1 (Ne.symm (hz1hz2)) with 
+  |⟨k,hkb,hk⟩ => 
+  match B_ball_exclude_point_construct_modify (-θ) hθneg z2 z1 (Ne.symm (hz1hz2)) with 
+  |⟨l,hlb,hl⟩ => 
+  rw[div_neg,div_neg,sub_neg_eq_add,← sub_eq_add_neg] at hef
+  rw[div_neg,div_neg,sub_neg_eq_add,sub_neg_eq_add] at hgh
+  rw[div_neg,sub_neg_eq_add] at hjb hlb 
+  let P := [a,b,c,d,e,f,g,h,i,j,k,l]
+  let Q := [b,c,d,e,f,g,h,i,j,k,l]
+  have hPQ : P = (a :: Q) := by simp only 
+  set m := (List.foldl min a Q) with hm
+  use m
+  use m
+  constructor
+  rw[nhs_dit,nhs_dit]
+  sorry
   sorry
 
 
@@ -499,3 +527,5 @@ instance IST_T₂ : T2Space ℚ+ := by
  * So, the strips of rational numbers will always intersect, and hence the space cannot be T25. 
 -/
 end IrrationalSlopeTopology
+
+
